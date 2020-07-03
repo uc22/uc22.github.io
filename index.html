@@ -111,14 +111,22 @@
             };
 
             if (path != "" && path1 != "") {
-                var d, p, p1;
+                var d, p, p1, a;
                 var result = "";
+                var path2 = $("#inpoint").val().trim().replace(" ", "").split("\n")
+                var separator;
+                if (path2[0].indexOf(",") != -1) {
+                    separator = ",";
+                } else if (path2[0].indexOf("\t") != -1) {
+                    separator = "\t";
+                };
                 $("#result").val(result);
                 for (var i = 0; i < path1.length; i++) {
                     p = AMap.GeometryUtil.closestOnLine(path1[i], path);
                     p1 = gcj02towgs84(p[0], p[1])
                     d = Math.round(AMap.GeometryUtil.distanceToLine(path1[i], path));
-                    result += path1[i][2] + ','+ p1 + ',' + d + '\n';
+                    a = azimuth(parseFloat(path2[i].split(separator)[0]), parseFloat(path2[i].split(separator)[1]), p1[0], p1[1]);
+                    result += path1[i][2] + ',' + p1 + ',' + d + "," + Math.round(a) + '\n';
                 };
                 $("#result").val(result);
             }
