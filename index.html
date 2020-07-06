@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,7 +6,9 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>点到线的距离和最近点</title>
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
-    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js" type="text/javascript"></script>
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="transGps.js" type="text/javascript"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <style>
@@ -16,45 +18,133 @@
             width: 100%;
             height: 100%;
         }
+        .input-cardtopright {
+            display: flex;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border-radius: .25rem;
+            width: 89px;
+            border-width: 0;
+            border-radius: 0.4rem;
+            box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+            position: absolute;
+            top: 140px;
+            right:calc(20% + 20px);
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 0.75rem 1.25rem;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
     <div id="container" style="width:80%;display:block;float: left">
     </div>
-    
+    <div id="style-card" class="input-cardtopright">
+        <div class="dropdown">
+            <span>地图风格</span>
+            <div class="dropdown-content">
+                <div id="map-styles">
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='normal' style="margin-bottom:3px"><span>标准</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='dark' style="margin-bottom:3px"><span>幻影黑</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='light' style="margin-bottom:3px"><span>月光银</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='whitesmoke' style="margin-bottom:3px"><span>远山黛</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='fresh' style="margin-bottom:3px"><span>草色青</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='grey' style="margin-bottom:3px"><span>雅士灰</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='graffiti' style="margin-bottom:3px"><span>涂鸦</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='macaron' style="margin-bottom:3px"><span>马卡龙</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='blue' style="margin-bottom:3px"><span>靛青蓝</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='darkblue' style="margin-bottom:3px"><span>极夜蓝</span><span class="input-text"></span>
+                    </div>
+                    <div class="input-item">
+                        <input type='radio' name='mapStyle' value='wine' style="margin-bottom:3px"><span>酱籽</span><span class="input-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="mumebox" style="width:20%; height: 100%;background-color:#0fbcf9;float: right;display:block">
         <div style="width:100%; height: 30%;background-color:#fff;display:block">
             <span style="margin-bottom:0px">导入线路</span><span id="busuanzi_container_site_pv" style="float:right">共计使用<span id="busuanzi_value_site_pv"></span>次</span>
             <textarea id="inline" style="width:100%; height: 100%;resize: none;max-height:calc(100% - 20px);font-size:10px;" placeholder="一行一对经纬度，英文逗号或Tab分隔,可直接从Excel中复制粘贴&#10经度,纬度&#10经度    纬度"></textarea>
         </div>
         <div style="width:100%; height: 30%;background-color:#fff;display:block">
-            <p>导入点</p>
+            <p style="margin-bottom:0px">导入点</p>
             <textarea id="inpoint" style="width:100%; height:100%;resize: none;max-height: calc(100% - 40px);font-size:10px;" placeholder="一行一对经纬度，英文逗号或Tab分隔,可直接从Excel中复制粘贴，描述可选&#10经度,纬度[,描述]&#10经度  纬度[  描述]"></textarea>
-            <input type="checkbox" name="showline" checked>显示线路
-            <input type="checkbox" name="showpoint" checked>显示点
-            <input class="btn" id="submit" value="提交" type="button">
-            <input class="btn" id="clear" value="清空地图" type="button">
+            <input type="checkbox" name="showline" checked style="margin-bottom:4px">显示线路
+            <input type="checkbox" name="showpoint" checked style="margin-bottom:4px">显示点
+            <input type="checkbox" name="showtools" checked="checked" style="margin-bottom:4px">显示工具
+            <button id="submit" type="button" class="btn btn-xs">提交</button>
+            <button id="clear" type="button" class="btn btn-xs">清空地图</button>
         </div>
 
         <div style="width:100%; height: 33%;background-color:#fff;display:block">
-            <p>计算结果</p>
+            <p style="margin-bottom:0px">计算结果</p>
             <textarea id="result" style="width:100%; height:100%;resize: none;max-height: calc(100% - 20px);font-size:10px;" placeholder="结果和导入点的顺序一致，结果格式:&#10点描述,交点经度,交点纬度,距离,点到线的方向角"></textarea>
         </div>
         <div style="width:100%; height: 6.9%;background-color:#fff;display:block">
             鼠标左键经纬度:<input type="text" id="lnglat">
         </div>
     </div>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=608d75903d29ad471362f8c550daf:112:485"></script>
+    <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=608d75903d29ad471362f8c58c550daf"></script>
     <script type="text/javascript">
         //初始化地图对象，加载地图
         var map = new AMap.Map("container", {
             resizeEnable: true,
-            zoom: 13
+            zoom: 13,
+            mapStyle: "amap://styles/normal"
         });
-        var path = [];//路径
-        var path1 = [];//点
+        var toolBar, MapType
+        AMap.plugin(['AMap.ToolBar', 'AMap.MapType'], function () {//异步加载插件
+            toolBar = new AMap.ToolBar({
+                liteStyle: false
+            });
+            map.addControl(toolBar);
+            MapType = new AMap.MapType();
+            map.addControl(MapType);
+        });
+        var path = [];//路径gcj02
+        var path1 = [];//点gcj02
         var pinfo = [];//点描述
-
 
 
         $("#inline").on('input', function (e) {
@@ -135,8 +225,24 @@
                 alert("线路或者点不能为空！");
             }
         });
-         $("#clear").click(function () {
+
+        $("#clear").click(function () {
             map.clearMap();
+        });
+        var styleBar = $("#style-card");
+        $("input[name = 'showtools']").on("click", function () {
+            $flag = $(this).is(":checked");
+            if (!$flag) {
+                //$(this).prop("checked", true);
+                toolBar.hide();
+                MapType.hide();
+                styleBar.hide();
+            } else {
+                //$(this).removeAttr("checked");
+                toolBar.show();
+                MapType.show();
+                styleBar.show();
+            };
         });
         function text2path(text) {
             var line = text.split('\n');
@@ -168,8 +274,21 @@
             return path;
         };
         map.on('click', function (e) {
-            document.getElementById("lnglat").value = gcj02towgs84(e.lnglat.getLng(),e.lnglat.getLat())
+            document.getElementById("lnglat").value = gcj02towgs84(e.lnglat.getLng(), e.lnglat.getLat())
         });
+
+        var radios = document.querySelectorAll("#map-styles input");
+        radios.forEach(function (radio) {
+            radio.onclick = setMapStyle;
+        });
+        function setMapStyle() {
+            var styleName = "amap://styles/" + this.value;
+            map.setMapStyle(styleName);
+        };
+
+
     </script>
+
+
 </body>
 </html>
