@@ -33,6 +33,7 @@
             <input type="checkbox" name="showline" checked>显示线路
             <input type="checkbox" name="showpoint" checked>显示点
             <input class="btn" id="submit" value="提交" type="button">
+            <input class="btn" id="clear" value="清空地图" type="button">
         </div>
 
         <div style="width:100%; height: 33%;background-color:#fff;display:block">
@@ -133,6 +134,9 @@
             else {
                 alert("线路或者点不能为空！");
             }
+        });
+         $("#clear").click(function () {
+            map.clearMap();
         });
         function text2path(text) {
             var line = text.split('\n');
