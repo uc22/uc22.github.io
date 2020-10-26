@@ -133,19 +133,14 @@
             zoom: 13,
             mapStyle: "amap://styles/normal",
             rotateEnable:true,
-            pitchEnable:true,
-            zoom: 17,
-            pitch: 50,
-            //viewMode:'3D', //开启3D视图,默认为关闭
+            //viewMode:'3D'
         });
-        var MapType,controlBar
-        AMap.plugin(['AMap.MapType','AMap.ControlBar'], function () {//异步加载插件
-            controlBar = new AMap.ControlBar({
-                position:{
-                left:'10px',
-                top:'10px'
+        var MapType,toolBar;
+        AMap.plugin(['AMap.MapType','AMap.toolBar'], function () {//异步加载插件
+            toolBar = new AMap.ToolBar({
+                liteStyle: false
             });
-            map.addControl(controlBar);
+            map.addControl(toolBar);
             MapType = new AMap.MapType();
             map.addControl(MapType);
         });
