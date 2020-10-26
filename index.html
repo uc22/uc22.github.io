@@ -135,14 +135,14 @@
             //rotateEnable:true,
             //viewMode:'3D'
         });
-        var MapType,toolBar;
+        var mapType,toolBar;
         AMap.plugin(['AMap.ToolBar','AMap.MapType'], function () {//异步加载插件
             toolBar = new AMap.ToolBar({
                 liteStyle: false
             });
             map.addControl(toolBar);
-            MapType = new AMap.MapType();
-            map.addControl(MapType);
+            mapType = new AMap.MapType();
+            map.addControl(mapType);
         });
         var path = [];//路径gcj02
         var path1 = [];//点gcj02
