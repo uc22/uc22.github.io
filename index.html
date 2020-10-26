@@ -142,6 +142,13 @@
             MapType = new AMap.MapType();
             map.addControl(MapType);
         });
+        var controlBar = new AMap.ControlBar({
+            position:{
+            left:'10px',
+            top:'10px'
+        }
+  });
+        controlBar.addTo(map);
         var path = [];//路径gcj02
         var path1 = [];//点gcj02
         var pinfo = [];//点描述
