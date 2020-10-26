@@ -131,7 +131,12 @@
         var map = new AMap.Map("container", {
             resizeEnable: true,
             zoom: 13,
-            mapStyle: "amap://styles/normal"
+            mapStyle: "amap://styles/normal",
+            rotateEnable:true,
+            pitchEnable:true,
+            zoom: 17,
+            pitch: 50,
+            viewMode:'3D', //开启3D视图,默认为关闭
         });
         var toolBar, MapType
         AMap.plugin(['AMap.ToolBar', 'AMap.MapType'], function () {//异步加载插件
