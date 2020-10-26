@@ -138,22 +138,17 @@
             pitch: 50,
             viewMode:'3D', //开启3D视图,默认为关闭
         });
-        var toolBar, MapType
-        AMap.plugin(['AMap.ToolBar', 'AMap.MapType'], function () {//异步加载插件
-            toolBar = new AMap.ToolBar({
-                liteStyle: false
+        var MapType,controlBar
+        AMap.plugin(['AMap.MapType','AMap.ControlBar'], function () {//异步加载插件
+            controlBar = new AMap.ControlBar({
+                position:{
+                left:'10px',
+                top:'10px'
             });
-            map.addControl(toolBar);
+            map.addControl(controlBar);
             MapType = new AMap.MapType();
             map.addControl(MapType);
         });
-        var controlBar = new AMap.ControlBar({
-            position:{
-            left:'10px',
-            top:'10px'
-        }
-  });
-        controlBar.addTo(map);
         var path = [];//路径gcj02
         var path1 = [];//点gcj02
         var pinfo = [];//点描述
